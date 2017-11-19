@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../js/vue.js"></script>
+	<style>
+	*{margin:0;padding:0;}
+	ul{list-style:none;}
+	body{font-family:"micosoft yahei";font-size:14px;color:#000;}
+
+	h1{padding:30px;text-align:center;}
+
+	/* web start */
+	.web{width:900px;margin-right:auto;margin-left:auto;}
+	.web-list{margin-bottom:10px;}
+	.web table{width:100%;border-collapse:collapse;}
+	.web th,td{padding:6px 10px;border:1px solid #999;text-align:center;}
+	.web th{background-color:#ddd;}
+
+	.web td a.del,
+	.web td a.edit,
+	.web td input[type="button"],input[type="button"]{display:inline-block;padding:3px 12px;margin:0 5px;border:1px solid #888;color:#000;border-radius:3px;background:linear-gradient(#b0b0b0,#f0f0f0);text-decoration:none;outline:none;}
+	
+	.web td a.del:hover,
+	.web td a.edit:hover,
+	.web td input[type="button"]:hover{border-color:#666;}
+
+	.web td a.del:active,
+	.web td a.edit:active,
+	.web td input[type="button"]:active{background:linear-gradient(#888,#ddd);}
+	
+	.web input[type="text"],
+	.web select{padding:3px 5px;}
+
+
+	</style>
+</head>
+<body>
+	<h1>网址导航</h1>
+
+	<div class="web" id="vm">
+		<div class="web-list">
+			<table>
+				<thead>
+					<tr>
+						<th width="10%"><input type="button" value="批量删除"></th>
+						<th width="15%">网站名称</th>
+						<th>网址</th>
+						<th width="14%">好评度</th>
+						<th width="18%">操作</th>
+					</tr>
+				</thead>
+
+				<tbody id="tbody">
+					<tr v-for="(x,index) in http">
+						<td><input type="checkbox"></td>
+						<td>{{ x.webname }}</td>
+						<td>{{ x.weburl }}</td>
+						<td>{{ x.good }}</td>
+						<td>
+							<input type="button" value="修改" v-on:click="amend()">
+							<input type="button" value="删除" v-on:click="del(index)">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+		</div>
+
+		<div class="web-form">
+
+			<table>
+				<tr>
+
+					<td>网站名称：<input type="text" id="name" v-model.trim="x.webname"></td>
+					<td>网址：<input type="text" v-model.trim="x.weburl"></td>
+					<td>好评度：<select name=""  v-model.trim="x.good">r
+						<option value="">请选择</option>
+						<option value="★">★</option>
+						<option value="★★">★★</option>
+						<option value="★★★">★★★</option>
+						<option value="★★★★">★★★★</option>
+						<option value="★★★★★">★★★★★</option>
+					</select></td>
+					<td width="18%">
+						<input type="button" value="新增" @click="addBook()">
+						<input type="button" value="重填" @click="resetForm">
+					</td>
+				</tr>
+			</table>
+
+		</div>
+
+
+	</div>
+
+
+<script>
+var vm = new Vue({
+	el:'#vm',
+	data:{
+		keyword:'',
+		x:{webname:'',weburl:'',good:''},
+		http:[
+			{webname:'京东',weburl:'http//www.jd.com',good:'★★★★'},
+			{webname:'淘宝',weburl:'http//www.taobao.com',good:'★★★★'}
+		],	
+		
+	},
+	
+	methods:{
+			// 新增
+			 addBook: function() {
+				this.http.push(this.x);
+            	this.x = {};
+    			this.x.good="";
+		},
+			//刪除
+		   del: function (index) {
+		   	if (confirm("你确定要删除吗？")) {
+		   		this.http.splice(index, 1);  
+		   	}
+      		
+    	},
+    	resetForm:function(){
+    		this.x = {};
+    		this.x.good="";
+    	}
+    }
+})
+
+</script>
+</body>
+</html>
